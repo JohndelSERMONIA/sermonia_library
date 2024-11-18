@@ -121,7 +121,7 @@ SHOW TABLES;
 ```
 {
   "status": "success",
-  "token": "<generated-token>",
+  "token": "{{jwt-token}}",
   "data": null
 }
 ```
@@ -139,7 +139,7 @@ SHOW TABLES;
 ```
 {
   "status": "success",
-  "newToken": "<generated-token>"
+  "newToken": "{{jwt-token}}"
 }
 ```
 
