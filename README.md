@@ -7,20 +7,25 @@ With this system, administrators can manage users, while regular users can perfo
 ## Table of Contents
 
 1. [Features](#features)
-2. [Technologies Used](#technologies-used)
-3. [Endpoints, Payloads, and Responses](#endpoints-payloads-responses)  
-   - [Register Users](#register-users)  
-   - [Authenticate Users](#authenticate-users)  
-   - [Insert Books with Author](#insert-books-with-author)  
-   - [Update Books with Author](#update-books-with-author)  
-   - [Delete Books and Authors](#delete-books-and-authors)  
-   - [Insert Users](#insert-users)  
-   - [Update Users](#update-users)  
-   - [Delete Users](#delete-users)  
-   - [Insert Author](#insert-author)  
-   - [Update Author](#update-author)  
-   - [Delete Author](#delete-author)  
-4. [How to Use](#how-to-use)
+2. [Setup](#setup)
+3. [SQL Database](#sql-database)
+4. [Technologies Used](#technologies-used)
+5. [API Endpoints](#api-endpoints)
+   - [Register Users](#register-users)
+   - [Authenticate Users](#authenticate-users)
+   - [Insert Books with Author](#insert-books-with-author)
+   - [Update Books with Author](#update-books-with-author)
+   - [Delete Books and Authors](#delete-books-and-authors)
+   - [Insert Users](#insert-users)
+   - [Update Users](#update-users)
+   - [Delete Users](#delete-users)
+   - [Insert Author](#insert-author)
+   - [Update Author](#update-author)
+   - [Delete Author](#delete-author)
+   - [Insert Book](#insert-book)
+   - [Update Book](#update-book)
+   - [Delete Book](#delete-book)
+6. [Notes](#notes)
 
 ## Features
 1. **User Registration:** Create an account to access the library system.
@@ -32,12 +37,59 @@ With this system, administrators can manage users, while regular users can perfo
    - Delete: Remove books, authors, and users.  
    - Retrieve: Access information on stored books, authors, and users.
 
+## Setup
+1. Clone the repository:
+  ```
+  git clone https://github.com/yourusername/sermonia_library.git
+  cd sermonia_library
+  ```
+2. Install dependencies:
+  ```
+  composer install
+  ```
+3. Configure the database:
+  - Update the database credentials in the code.php file:
+  ```
+  $servername = "localhost";
+  $dbusername = "root";
+  $dbpassword = "";
+  $dbname = "library";
+  ```
+4. Set up the database schema:
+  - Import the provided SQL file into your MySQL database.
+5. Run the server:
+  ```
+  php -S localhost:8000 -t public
+  ```
+
+## SQL Database
+The repository includes a database schema file named library.sql. This file contains the necessary table structure for the application to function correctly.
+
+### Importing the Database
+1. Open your MySQL client or tool (e.g., phpMyAdmin, MySQL Workbench).
+2. Create a new database:
+```
+CREATE DATABASE library;
+```
+3. Select the newly created database:
+```
+USE library;
+```
+4. Import the library.sql file. For example, using the MySQL command line:
+```
+mysql -u root -p library < library.sql
+```
+5. Verify the tables are created:
+```
+SHOW TABLES;
+```
+
 ## Technologies Used
 1. Backend: PHP (with Slim Framework)
 2. Database: MySQL
 3. Authentication: JSON Web Tokens (JWT) with token rotation
 
-## Endpoints, Payloads, and Responses
+## API Endpoints
 
 ### Register Users
 **Endpoint: POST** `/sermonia_library/public/user/register`  
@@ -276,39 +328,8 @@ With this system, administrators can manage users, while regular users can perfo
   "data": null 
 }
 ```
-
-# How to Use
-1. First, ensure that the `sermonia_library.sql` database is imported into your MySQL database.
-    - This can be found in the `sermonia_library/database/sermonia_library.sql` file in the GitHub repository
-    - Import the file into your MySQL database using the following command:
-    ```
-    SOURCE /path/to/sermonia_library.sql;
-    ```
-    Replace `/path/to/sermonia_library.sql` with the actual path where the file is located.
-2. Create an Account using the Register Payload:
-    - Use the **Register** endpoint to create a new user.
-    - Sample payload for registering a user:
-    ```
-    {
-      "username": "Username",
-      "password": "Password123"
-    }
-    ```
-3. Authenticate the User using the Authenticate Payload:
-    - After registration, authenticate the user to obtain the JWT token.
-    - Sample payload for authentication:
-    ```
-    {
-      "username": "jj",
-      "password": "jj123"
-    }    
-    ```
-    - The response will contain a <generated-token>.
-4. To use the Insert, Update, Display, and Delete Books payloads:
-    - Copy the <generated-token> received from the authentication step.
-    - Go to the Headers section in your API client (e.g., Postman, Thunderclient).
-    - Add **Authorization** in the header and paste the <generated-token> in the value field:
-    ```
-    Authorization: <generated-token>
-    ```
-5. Use the payloads, configure them according to your needs, and press SEND in your API client.
+# Notes
+- All secured endpoints require a valid JWT token in the **Authorization** header:
+```
+Authorization: Bearer <your-token>
+```
